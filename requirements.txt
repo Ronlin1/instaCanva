@@ -1,0 +1,9 @@
+Flask
+requests
+waitress
+Gunicorn
+sendgrid
+falcon
+twilio
+google-generativeai
+python-dotenv

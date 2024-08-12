@@ -3,7 +3,7 @@
 instaCanva is a powerful WhatsApp bot designed to integrate seamlessly with Canva, allowing users to manage and create Canva designs instantly from WhatsApp. The bot supports functionalities such as design creation, asset uploading, design listing, idea creation, Canva custom support, Canva for Teams Management, and more.
 
 📌 Code is available to the judging team or members upon request! 
-You don't need to download any app! to try instaCanva: Simply send join moon-reach to +14155238886 or visit this [link](https://wa.me/14155238886?text=Hello%20instaCanva)
+You don't need to download any app! to try instaCanva: Simply send join moon-reach to +14155238886 or visit this [link](https://wa.me/14155238886?text=Hello)
 
 
 ## Features

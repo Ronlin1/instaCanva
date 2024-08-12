@@ -500,5 +500,5 @@ def print_session():
         print(f'{key}: {value}')
     return "Session values have been printed to the console."
 
-if __name__ == '__main__':
-    app.run(port=8000, debug=False)
+# if __name__ == '__main__':
+#     app.run(port=8000, debug=False)

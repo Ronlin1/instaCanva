@@ -12,7 +12,7 @@ You don't need to download any app! to try instaCanva: Simply send `join moon-re
  - `connect` -- Connect your Canva account to instaCanva
  - `download` or `get me` or `export` -- This downloads and retrieves the query parametered file
 
-## Features
+## Features 
 ![](/instaCanva.png)
 - **Authenticate with Canva**: Users can authenticate their Canva account via OAuth2.
 - **Upload Assets**: Upload images and other assets to Canva.

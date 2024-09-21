@@ -5,5 +5,4 @@ Gunicorn
 sendgrid
 falcon
 twilio
-google-generativeai
 python-dotenv

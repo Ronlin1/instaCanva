@@ -11,7 +11,6 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 import binascii
 import json
-import google.generativeai as genai
 from dotenv import load_dotenv
 import logging
 import time

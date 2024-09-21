@@ -33,8 +33,12 @@ SCOPE = 'app:read design:content:read design:meta:read design:content:write desi
 CODE_CHALLENGE_METHOD = 'S256'
 
 # Configure the Google Gemini API
-genai.configure(api_key=os.environ.get('GENAI_API_KEY'))
-model = genai.GenerativeModel('gemini-1.5-flash')
+# Define the URL for IBM token generation and the API key
+TOKEN_URL = 'https://iam.cloud.ibm.com/identity/token'
+API_KEY = os.environ.get('IBM_API_KEY')
+
+# IBM Watson Model URL
+IBM_MODEL_URL = "https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2023-05-29"
 
 # SendGrid configuration
 sendgrid_api_key = os.environ.get('SENDGRID_API_KEY')
@@ -61,6 +65,23 @@ def generate_code_challenge(code_verifier):
     code_verifier_bytes = code_verifier.encode('utf-8')
     code_challenge_bytes = hashlib.sha256(code_verifier_bytes).digest()
     return base64.urlsafe_b64encode(code_challenge_bytes).decode('utf-8').rstrip('=')
+
+# Function to get the bearer token
+def get_ibm_bearer_token(api_key):
+    data = {
+        'grant_type': 'urn:ibm:params:oauth:grant-type:apikey',
+        'apikey': api_key
+    }
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+    response = requests.post(TOKEN_URL, data=data, headers=headers)
+
+    if response.status_code == 200:
+        token_info = response.json()
+        return token_info.get('access_token')
+    else:
+        raise Exception(f"Failed to obtain token: {response.status_code}\n{response.text}")
 
 @app.route('/')
 def index():
@@ -141,29 +162,58 @@ def send_email(subject, html_content, to_email):
     except Exception as e:
         logging.error(f"Failed to send email: {e}")
 
+# Function to handle natural language input using IBM Watson model
 def handle_natural_language_input(user_input):
+    # Construct the prompt
     prompt = f"""
-    You are instaCanva⚡, a productive & creative WhatsApp Bot 🤩 tool to help users create and manage Canva designs.
-    Users might ask for help with creating a new design, finding templates, customizing designs, managing files,
-    or account assistance. Given the user's input: {user_input}', generate an appropriate response.
+    Your name is instaCanva⚡(always put this emoji ⚡ alongside instaCanva name), a creative and productive tool designed to help users effortlessly create and manage Canva designs. Users can ask for help with tasks such as creating new designs, finding templates, customizing existing designs, managing files, or seeking account assistance.
 
-    Your tagline is Instant ideas! Instant Designs! and you have some built in functionality to help users right here in
-    WhatsApp : You can allow users to create designs, list designs , edit, view, upload assets and get ideas for their Canva
-    projects right within WhatsApp! Also" if the user says Thanks or any related message, it means, he has gotten some other service you have offer.
+    When responding to user input, tailor your reply based on the request:
+    For example, given the {user_input}, generate an appropriate response to assist them.
 
+    Your Tagline: Instant ideas! Instant Designs!
+    You offer several features directly within WhatsApp, including the ability to create designs, list and edit them, view projects, upload assets, and provide creative ideas for Canva projects.
+
+    If a user expresses gratitude with \"Thanks\" or a related message, it indicates that they have successfully received the service they needed.
+    Always introduce yourself at the start of the conversation and give a brief overview of the services you offer. Feel free to use creative emojis accordingly in every response.
+
+    You are built by Ronnie & Jovita from Uganda to seamlessly ship canva into WhatsApp leveraging generative & LLM Capabilities!
     """
 
-    response = model.generate_content(prompt)
+    # Get the bearer token
+    bearer_token = get_ibm_bearer_token(API_KEY)
 
-    # Ensure the response has candidates
-    if response and response.candidates:
-        # Extract the summarised sentence from the first candidate's content parts
-        candidate = response.candidates[0]
-        if candidate.content and candidate.content.parts:
-            summarised_sentence = candidate.content.parts[0].text.strip()
-            return summarised_sentence
+    # Request body for IBM Watson model
+    body = {
+        "input": prompt,
+        "parameters": {
+            "decoding_method": "greedy",
+            "max_new_tokens": 500,
+            "repetition_penalty": 1
+        },
+        "model_id": "ibm/granite-13b-chat-v2",
+        "project_id": "6ca88f8a-cc72-44d0-8f4a-8ceaf9e66c03"
+    }
 
-    return "Sorry, I couldn't understand your request. Please try again or ask for help."
+    # Headers with the bearer token
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {bearer_token}"
+    }
+
+    # Send the request to the IBM model
+    response = requests.post(IBM_MODEL_URL, headers=headers, json=body)
+
+    if response.status_code != 200:
+        raise Exception(f"Non-200 response: {response.status_code}\n{response.text}")
+
+    # Process the response and extract the generated text
+    data = response.json()
+    generated_text = data['results'][0]['generated_text']
+    cleaned_text = generated_text.split("Input:")[0].strip()
+
+    return cleaned_text
 
 @app.route('/whatsapp', methods=['POST'])
 def whatsapp():

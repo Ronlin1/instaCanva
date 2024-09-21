@@ -71,7 +71,7 @@ InstaCanva is an actively developing project. We are continuously working on enh
    Create a `.env` file in the root directory of the project and add the following environment variables:
 
    ```
-   GENAI_API_KEY=<your-genai-api-key>
+   IBM_API_KEY=<your-genai-api-key>
    SENDGRID_API_KEY=<your-sendgrid-api-key>
    SENDGRID_MAIL=<your-sendgrid-email>
    TWILIO_ACCOUNT_SID=<your-twilio-account-sid>
@@ -89,7 +89,7 @@ InstaCanva is an actively developing project. We are continuously working on enh
    python app.py
    ```
 
-   The bot will be accessible at `http://localhost:5000`.
+   The bot will be accessible at `http://localhost:8000`.
 
 ## Endpoints
 

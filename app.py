@@ -212,7 +212,12 @@ def handle_natural_language_input(user_input):
     # Process the response and extract the generated text
     data = response.json()
     generated_text = data['results'][0]['generated_text']
+    
+    # Step 1: Split off unwanted "Input:" part
     cleaned_text = generated_text.split("Input:")[0].strip()
+
+    # Step 2: Remove text within parentheses using regex
+    cleaned_text = re.sub(r'\(.*?\)', '', cleaned_text).strip()
 
     return cleaned_text
 

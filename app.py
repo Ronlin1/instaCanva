@@ -14,6 +14,7 @@ import json
 from dotenv import load_dotenv
 import logging
 import time
+import re
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

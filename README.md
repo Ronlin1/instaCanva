@@ -19,7 +19,7 @@ You don't need to download any app! to try instaCanva: Simply send `join moon-re
 - **Create Designs**: Create new Canva designs with user-provided titles.
 - **List Designs**: Search and list Canva designs based on user input.
 - **Export Designs**: Export Canva designs in PDF format and receive them via WhatsApp.
-- **Natural Language Processing**: Handle various user inputs and provide relevant responses using Google Gemini AI.
+- **Natural Language Processing**: Handle various user inputs and provide relevant responses using IBM Watsonx  AI.
 - 
 ## Current Limitations
 - Limited Command Handling: The bot currently supports a basic set of commands. More complex commands and functionalities will be added in future updates.
@@ -45,7 +45,7 @@ InstaCanva is an actively developing project. We are continuously working on enh
 - **Requests**: For making HTTP requests.
 - **Twilio**: For handling WhatsApp messages.
 - **SendGrid**: For sending emails.
-- **Google Gemini AI**: For natural language processing.
+- **IBM Watsonx  AI**: For natural language processing.
 
 ## Setup
 
@@ -131,7 +131,7 @@ The bot allows users to search and list their Canva designs based on input keywo
 
 ### Natural Language Processing
 
-Google Gemini AI is used to handle natural language input from users, providing appropriate responses and assistance based on the user's request.
+IBM Watsonx  AI is used to handle natural language input from users, providing appropriate responses and assistance based on the user's request.
 
 ## Logging
 

@@ -32,7 +32,6 @@ REDIRECT_URI = 'https://instacanva.onrender.com/callback'
 SCOPE = 'app:read design:content:read design:meta:read design:content:write design:permission:read design:permission:write folder:read folder:write folder:permission:read folder:permission:write asset:read asset:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read profile:read'
 CODE_CHALLENGE_METHOD = 'S256'
 
-# Configure the Google Gemini API
 # Define the URL for IBM token generation and the API key
 TOKEN_URL = 'https://iam.cloud.ibm.com/identity/token'
 API_KEY = os.environ.get('IBM_API_KEY')

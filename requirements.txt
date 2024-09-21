@@ -3,6 +3,5 @@ requests
 waitress
 Gunicorn
 sendgrid
-falcon
 twilio
 python-dotenv
